@@ -1,48 +1,43 @@
-import React, { Component } from "react";
-class search extends Component {
-  state = {
-    text: ""
+import React, { useState } from "react";
+
+const Search = ({ setAlert, searchUser }) => {
+  const [text, textState] = useState("");
+
+  const onChange = event => {
+    setAlert("");
+
+    textState(event.target.value);
   };
 
-  onChange = event => {
-    this.props.setAlert("");
-
-    this.setState({
-      text: event.target.value
-    });
-  };
-
-  fireSubmit = event => {
+  const fireSubmit = event => {
     event.preventDefault();
-    if (this.state.text === "") {
-      this.props.setAlert("Can't submit an empty field");
+    if (text === "") {
+      setAlert("Can't submit an empty field");
     } else {
-      this.props.searchUser(this.state.text);
-      this.setState({ text: "" });
+      searchUser(text);
+      textState("");
     }
   };
 
-  render() {
-    return (
-      <div>
-        <form className="form" onSubmit={this.fireSubmit}>
-          <input
-            type="text"
-            name="text"
-            placeholder="Search Users..."
-            value={this.state.text}
-            onChange={this.onChange}
-          />
-          <input
-            type="submit"
-            value="search"
-            className="btn btn-dark btn-block"
-          />
-        </form>
-        <h1>{this.state.text}</h1>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <form className="form" onSubmit={fireSubmit}>
+        <input
+          type="text"
+          name="text"
+          placeholder="Search Users..."
+          value={text}
+          onChange={onChange}
+        />
+        <input
+          type="submit"
+          value="search"
+          className="btn btn-dark btn-block"
+        />
+      </form>
+      <h1>{text}</h1>
+    </div>
+  );
+};
 
-export default search;
+export default Search;
